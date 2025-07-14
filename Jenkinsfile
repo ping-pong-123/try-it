@@ -1,11 +1,13 @@
 pipeline {
-  agent {
-    docker { image 'node:16-alpine' }
-  }
+  agent any
+
   stages {
-    stage('Test') {
+    stage('Run in Podman container') {
       steps {
-        sh 'node --version'
+        sh '''
+          podman pull node:16-alpine
+          podman run --rm node:16-alpine node --version
+        '''
       }
     }
   }
